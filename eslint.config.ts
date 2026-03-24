@@ -1,6 +1,4 @@
 import js from '@eslint/js';
-import { defineConfig } from 'eslint/config';
-import cssModulesPlugin from 'eslint-plugin-css-modules';
 import importPlugin from 'eslint-plugin-import';
 import perfectionist from 'eslint-plugin-perfectionist';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
@@ -9,85 +7,34 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  {
-    ignores: [
-      '*.config.*',
-      '**/*.d.ts',
-      'dist',
-      'node_modules',
-      'package*.json',
-      'public',
-      'storybook-static',
-    ],
-  },
+/** @type {import('eslint').Linter.Config} */
+const config = [
+  { ignores: ['*.config.*', 'dist', 'node_modules', 'package*.json', 'public'] },
   js.configs.recommended,
   importPlugin.flatConfigs.recommended,
-  importPlugin.flatConfigs.typescript,
-  tseslint.configs.recommendedTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
   react.configs.flat.recommended,
   react.configs.flat['jsx-runtime'],
   reactHooks.configs['recommended-latest'],
   {
-    files: ['**/*.{ts,tsx,js,jsx}'],
+    files: ['**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2020,
-      parser: tseslint.parser,
+      globals: globals.browser,
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
-        projectService: true,
         sourceType: 'module',
-        tsconfigRootDir: import.meta.dirname,
-        warnOnUnsupportedTypeScriptVersion: false,
       },
-      globals: globals.browser,
     },
     plugins: {
-      'css-modules': cssModulesPlugin,
-      perfectionist,
+      perfectionist, 
       react,
       'react-refresh': reactRefresh,
-      '@typescript-eslint': tseslint.plugin,
       'unused-imports': unusedImports,
     },
     rules: {
-      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
-      '@typescript-eslint/consistent-type-imports': [
-        'error',
-        {
-          disallowTypeAnnotations: true,
-          fixStyle: 'separate-type-imports',
-          prefer: 'type-imports',
-        },
-      ],
-      '@typescript-eslint/explicit-function-return-type': 'error',
-      '@typescript-eslint/explicit-module-boundary-types': 'error',
-      '@typescript-eslint/no-import-type-side-effects': 'error',
-      '@typescript-eslint/no-unused-expressions': [
-        'error',
-        {
-          allowShortCircuit: true,
-          allowTernary: true,
-        },
-      ],
-      '@typescript-eslint/no-unused-imports': 'off',
-      'unused-imports/no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          args: 'after-used',
-          argsIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^_',
-          vars: 'all',
-          varsIgnorePattern: '^_',
-        },
-      ],
-      'css-modules/no-undef-class': 'error',
-      'css-modules/no-unused-class': 'warn',
+      'no-unused-vars': 'off',
       'import/no-unresolved': 'error',
       'import/no-unused-modules': 'error',
       'import/order': 'off',
@@ -98,7 +45,6 @@ export default defineConfig(
           order: 'asc',
           groups: [
             'value-builtin',
-            'value-external',
             'value-internal',
             ['value-parent', 'value-sibling'],
             [
@@ -106,13 +52,13 @@ export default defineConfig(
               'type-internal',
               'type-parent',
               'type-sibling',
-              'type-index',
-            ],
+              'type-index'
+             ],
             'ts-equals-import',
             'side-effect-style',
             'style',
           ],
-                    internalPattern: [
+          internalPattern: [
             '^/',
             '^@components/',
             '^@contexts/',
@@ -134,26 +80,29 @@ export default defineConfig(
       'react/prop-types': 'off',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'unused-imports/no-unused-imports': 'error',
-      'react-hooks/exhaustive-deps': 'off'
+      'unused-imports/no-unused-vars': 'error',
     },
     settings: {
-      'css-modules': {
-        camelCase: 'true',
-        filetypes: {
-          '.css': 'postcss',
-          '.module.css': 'postcss',
-        },
-      },
       react: {
         version: 'detect',
       },
       'import/resolver': {
-        typescript: {
-          alwaysTryTypes: true,
-          project: './tsconfig.json',
+        alias: {
+          map: [
+            ['', './public'],
+            ['@components', './src/components'],
+            ['@contexts', './src/contexts'],
+            ['@hoc/', './src/hoc'],
+            ['@hooks', './src/hooks'],
+            ['@pages', './src/pages'],
+            ['@services', './src/services'],
+            ['@utils', './src/utils'],
+          ],
         },
       },
     },
   },
-  eslintPluginPrettierRecommended
-);
+  eslintPluginPrettierRecommended,
+];
+
+export default config;

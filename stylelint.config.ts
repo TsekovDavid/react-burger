@@ -1,6 +1,5 @@
-import type { Config } from "stylelint";
-
-const config: Config = {
+/** @type {import('stylelint').Config} */
+const config = {
   extends: ['stylelint-config-standard'],
   ignoreFiles: ['**/fonts/', '**/images/'],
   plugins: ['stylelint-order'],
@@ -22,7 +21,7 @@ const config: Config = {
     'declaration-empty-line-before': 'never',
     'font-family-name-quotes': 'always-unless-keyword',
     'function-url-no-scheme-relative': true,
-    'number-max-precision': 3,
+    'number-max-precision': 2,
     'order/order': ['custom-properties', 'declarations'],
     'order/properties-order': [
       'all',
