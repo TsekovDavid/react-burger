@@ -1,9 +1,7 @@
-export type TIngredientType = 'bun' | 'main' | 'sauce';
-
 export type TIngredient = {
   _id: string;
   name: string;
-  type: TIngredientType;
+  type: string;
   proteins: number;
   fat: number;
   carbohydrates: number;
@@ -13,9 +11,4 @@ export type TIngredient = {
   image_large: string;
   image_mobile: string;
   __v: number;
-};
-
-export type TIngredientsResponse = {
-  success: boolean;
-  data: TIngredient[];
 };

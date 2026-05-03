@@ -1,24 +1,5 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
-  min-width: 320px;
-  min-height: 100vh;
   margin: 0;
-  background-color: var(--background-alt);
-}
-
-a {
-  color: inherit;
-}
-
-button {
-  font: inherit;
-}
-
-#root {
-  min-height: 100vh;
 }
 
 /* Fix for scrollbar */
