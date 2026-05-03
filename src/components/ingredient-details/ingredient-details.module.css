@@ -1,0 +1,42 @@
+.content {
+  width: 520px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.image {
+  display: block;
+  width: 480px;
+  height: 240px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.name {
+  margin: 16px 0 0;
+}
+
+.nutrition {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 32px;
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nutrition-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 112px;
+}
+
+.nutrition-item:first-child {
+  width: 120px;
+}
+
+.nutrition-value {
+  margin-top: 8px;
+}
