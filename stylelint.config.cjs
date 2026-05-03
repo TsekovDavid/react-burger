@@ -258,36 +258,8 @@ const config = {
       'animation-fill-mode',
       'appearance',
       'clip',
-      'clip-path',
-      'counter-reset',
-      'counter-increment',
-      'resize',
-      'user-select',
-      'nav-index',
-      'nav-up',
-      'nav-right',
-      'nav-down',
-      'nav-left',
-      'pointer-events',
-      'quotes',
-      'touch-action',
-      'zoom',
-      'fill',
-      'fill-rule',
-      'clip-rule',
-      'stroke',
-      'stroke-width',
     ],
-    'rule-empty-line-before': [
-      'always-multi-line',
-      {
-        except: ['first-nested'],
-      },
-    ],
-    'selector-attribute-quotes': 'always',
-    'selector-class-pattern':
-      '^[a-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*(__[a-z0-9]+(-[a-z0-9]+)*)?(_[a-z0-9]+(-[a-z0-9]+)*)?(_[a-z0-9]+(-[a-z0-9]+)*)?$',
   },
 };
 
-export default config;
+module.exports = config;
