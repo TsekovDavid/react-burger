@@ -6,7 +6,7 @@
   "scripts": {
     "build": "vite build",
     "commit": "cz",
-    "check": "stylelint && eslint src/",
+    "check": "npm run stylelint && npm run eslint",
     "e2e": "npx playwright test",
     "e2e:ui": "npx playwright test --ui",
     "dev": "vite",
@@ -16,9 +16,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "eslint": "eslint src/ --fix",
-    "prettier": "prettier --write \"src/**/*.{js,jsx,json,html,css,md}\"",
-    "stylelint": "stylelint \"src/**/*.css\" --fix",
+    "eslint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,html,css,md}\"",
+    "stylelint": "stylelint --config stylelint.config.cjs \"src/**/*.css\" --fix",
     "lint": "npm run stylelint && npm run eslint && npm run prettier"
   },
   "dependencies": {
@@ -45,7 +45,7 @@
     "@vitejs/plugin-react": "^5.0.3",
     "@vitest/browser": "^3.2.4",
     "@vitest/ui": "^3.2.4",
-    "commitizen": "^4.3.1",
+    "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
@@ -83,7 +83,7 @@
       "stylelint --fix",
       "prettier --write"
     ],
-    "./src/**/*.{js,jsx}": [
+    "./src/**/*.{ts,tsx,js,jsx}": [
       "eslint --fix",
       "prettier --write"
     ],
