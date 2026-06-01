@@ -49,6 +49,10 @@
   cursor: pointer;
 }
 
+.card-dragging {
+  opacity: 0.4;
+}
+
 .image {
   width: 240px;
   height: 120px;

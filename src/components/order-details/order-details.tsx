@@ -2,14 +2,14 @@ import orderDoneIcon from '../../assets/images/order-done.svg';
 
 import styles from './order-details.module.css';
 
-const TEST_ORDER_NUMBER = '034536';
+type TOrderDetailsProps = {
+  orderNumber: number;
+};
 
-export const OrderDetails = (): React.JSX.Element => {
+export const OrderDetails = ({ orderNumber }: TOrderDetailsProps): React.JSX.Element => {
   return (
     <div className={styles.content}>
-      <p className={`${styles.number} text text_type_digits-large`}>
-        {TEST_ORDER_NUMBER}
-      </p>
+      <p className={`${styles.number} text text_type_digits-large`}>{orderNumber}</p>
       <p className={`${styles.identifier} text text_type_main-medium`}>
         идентификатор заказа
       </p>

@@ -1,21 +1,72 @@
+import { selectIngredientCounts } from '@services/burger-constructor/burger-constructor-slice';
+import { setCurrentIngredient } from '@services/current-ingredient/current-ingredient-slice';
+import { DND_ITEM_TYPES } from '@services/dnd';
+import { useAppDispatch, useAppSelector } from '@services/hooks';
+
 import type { TIngredient, TIngredientType } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
 
 import { Counter, CurrencyIcon, Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { useDrag } from 'react-dnd';
 
 type TBurgerIngredientsProps = {
   ingredients: TIngredient[];
-  ingredientCounts: Record<string, number>;
+};
+
+type TIngredientCardProps = {
+  ingredient: TIngredient;
+  count: number;
   onIngredientClick: (ingredient: TIngredient) => void;
+};
+
+const IngredientCard = ({
+  ingredient,
+  count,
+  onIngredientClick,
+}: TIngredientCardProps): React.JSX.Element => {
+  const cardRef = useRef<HTMLButtonElement>(null);
+  const [{ isDragging }, dragRef] = useDrag(
+    () => ({
+      type: DND_ITEM_TYPES.ingredient,
+      item: { ingredient },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }),
+    [ingredient]
+  );
+
+  dragRef(cardRef);
+
+  return (
+    <li className={styles['card-item']}>
+      <button
+        ref={cardRef}
+        className={`${styles.card} ${isDragging ? styles['card-dragging'] : ''}`}
+        type='button'
+        onClick={() => onIngredientClick(ingredient)}
+      >
+        {count > 0 ? <Counter count={count} extraClass={styles.counter} /> : null}
+        <img className={styles.image} src={ingredient.image} alt={ingredient.name} />
+        <div className={styles.price}>
+          <span className='text text_type_digits-default'>{ingredient.price}</span>
+          <CurrencyIcon type='primary' />
+        </div>
+        <span className={`${styles.name} text text_type_main-default`}>
+          {ingredient.name}
+        </span>
+      </button>
+    </li>
+  );
 };
 
 export const BurgerIngredients = ({
   ingredients,
-  ingredientCounts,
-  onIngredientClick,
 }: TBurgerIngredientsProps): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+  const ingredientCounts = useAppSelector(selectIngredientCounts);
   const [currentTab, setCurrentTab] = useState<TIngredientType>('bun');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<Record<TIngredientType, HTMLElement | null>>({
@@ -76,27 +127,23 @@ export const BurgerIngredients = ({
     );
   }, []);
 
+  const handleIngredientClick = useCallback(
+    (ingredient: TIngredient) => {
+      dispatch(setCurrentIngredient(ingredient));
+    },
+    [dispatch]
+  );
+
   const renderIngredientCard = (ingredient: TIngredient): React.JSX.Element => {
     const count = ingredientCounts[ingredient._id] ?? 0;
 
     return (
-      <li key={ingredient._id} className={styles['card-item']}>
-        <button
-          className={styles.card}
-          type='button'
-          onClick={() => onIngredientClick(ingredient)}
-        >
-          {count > 0 ? <Counter count={count} extraClass={styles.counter} /> : null}
-          <img className={styles.image} src={ingredient.image} alt={ingredient.name} />
-          <div className={styles.price}>
-            <span className='text text_type_digits-default'>{ingredient.price}</span>
-            <CurrencyIcon type='primary' />
-          </div>
-          <span className={`${styles.name} text text_type_main-default`}>
-            {ingredient.name}
-          </span>
-        </button>
-      </li>
+      <IngredientCard
+        key={ingredient._id}
+        ingredient={ingredient}
+        count={count}
+        onIngredientClick={handleIngredientClick}
+      />
     );
   };
 
