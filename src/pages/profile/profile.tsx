@@ -1,10 +1,26 @@
+import { useAppDispatch, useAppSelector } from '@services/hooks';
+import { logoutUser } from '@services/user/user-actions';
+import { selectUserIsLoading } from '@services/user/user-slice';
+
 import styles from '../page.module.css';
 
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 export const ProfilePage = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const isOrdersActive = pathname.startsWith('/profile/orders');
+  const isLoading = useAppSelector(selectUserIsLoading);
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser()).unwrap();
+      void navigate('/login', { replace: true });
+    } catch {
+      // The request error remains available in the user slice.
+    }
+  };
 
   return (
     <main className={styles.profile}>
@@ -32,8 +48,10 @@ export const ProfilePage = (): React.JSX.Element => {
           <button
             className={`${styles['profile-link']} ${styles['profile-button']} text text_type_main-medium`}
             type='button'
+            disabled={isLoading}
+            onClick={handleLogout}
           >
-            Выход
+            {isLoading ? 'Выходим...' : 'Выход'}
           </button>
         </nav>
         <p className={`${styles['profile-description']} text text_type_main-default`}>

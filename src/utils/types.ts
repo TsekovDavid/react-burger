@@ -31,3 +31,47 @@ export type TOrderResponse = {
     number: number;
   };
 };
+
+export type TUser = {
+  email: string;
+  name: string;
+};
+
+export type TAuthCredentials = {
+  email: string;
+  password: string;
+};
+
+export type TRegisterData = TAuthCredentials & {
+  name: string;
+};
+
+export type TUpdateUserData = TRegisterData;
+
+export type TAuthResponse = {
+  success: boolean;
+  user: TUser;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type TTokenResponse = {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type TUserResponse = {
+  success: boolean;
+  user: TUser;
+};
+
+export type TMessageResponse = {
+  success: boolean;
+  message: string;
+};
+
+export type TResetPasswordData = {
+  password: string;
+  token: string;
+};

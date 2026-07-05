@@ -25,6 +25,11 @@
   margin-top: 80px;
 }
 
+.error {
+  margin: 24px 0 0;
+  color: var(--colors-interface-error);
+}
+
 .links a {
   color: var(--colors-interface-accent);
   text-decoration: none;
