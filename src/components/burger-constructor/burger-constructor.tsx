@@ -1,5 +1,6 @@
 import {
   addIngredient,
+  clearBurgerConstructor,
   moveIngredient,
   removeIngredient,
   selectBurgerConstructorBun,
@@ -151,7 +152,14 @@ export const BurgerConstructor = (): React.JSX.Element => {
       return;
     }
 
-    void dispatch(sendOrder(orderIngredientIds));
+    void dispatch(sendOrder(orderIngredientIds))
+      .unwrap()
+      .then(() => {
+        dispatch(clearBurgerConstructor());
+      })
+      .catch(() => {
+        // The visible error message is stored in the order slice.
+      });
   }, [dispatch, orderIngredientIds]);
   const isBunHover = isOver && draggedIngredientType === 'bun';
   const isIngredientHover =
