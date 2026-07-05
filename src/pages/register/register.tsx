@@ -1,0 +1,54 @@
+import { AuthForm } from '@components/auth-form/auth-form';
+
+import {
+  EmailInput,
+  Input,
+  PasswordInput,
+} from '@krgaa/react-developer-burger-ui-components';
+import { useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
+
+export const RegisterPage = (): React.JSX.Element => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
+  return (
+    <AuthForm
+      title='Регистрация'
+      submitText='Зарегистрироваться'
+      onSubmit={handleSubmit}
+      footer={
+        <p className='text text_type_main-default text_color_inactive'>
+          Уже зарегистрированы? <Link to='/login'>Войти</Link>
+        </p>
+      }
+    >
+      <Input
+        value={name}
+        onChange={(event) => setName(event.target.value)}
+        placeholder='Имя'
+        name='name'
+        required
+      />
+      <EmailInput
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+        placeholder='E-mail'
+        name='email'
+        required
+      />
+      <PasswordInput
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+        placeholder='Пароль'
+        name='password'
+        required
+      />
+    </AuthForm>
+  );
+};

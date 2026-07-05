@@ -1,79 +1,47 @@
 import { AppHeader } from '@components/app-header/app-header';
-import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { IngredientDetails } from '@components/ingredient-details/ingredient-details';
-import { Modal } from '@components/modal/modal';
-import { OrderDetails } from '@components/order-details/order-details';
-import {
-  selectCurrentIngredient,
-  clearCurrentIngredient,
-} from '@services/current-ingredient/current-ingredient-slice';
-import { useAppDispatch, useAppSelector } from '@services/hooks';
+import { FeedPage } from '@pages/feed/feed';
+import { ForgotPasswordPage } from '@pages/forgot-password/forgot-password';
+import { Home } from '@pages/home/home';
+import { IngredientPage } from '@pages/ingredient/ingredient';
+import { LoginPage } from '@pages/login/login';
+import { NotFoundPage } from '@pages/not-found/not-found';
+import { ProfileDetailsPage } from '@pages/profile-details/profile-details';
+import { ProfileOrdersPage } from '@pages/profile-orders/profile-orders';
+import { ProfilePage } from '@pages/profile/profile';
+import { RegisterPage } from '@pages/register/register';
+import { ResetPasswordPage } from '@pages/reset-password/reset-password';
+import { useAppDispatch } from '@services/hooks';
 import { fetchIngredients } from '@services/ingredients/ingredients-actions';
-import {
-  selectIngredients,
-  selectIngredientsError,
-  selectIngredientsIsLoading,
-} from '@services/ingredients/ingredients-slice';
-import { clearOrder, selectOrderNumber } from '@services/order/order-slice';
 
 import styles from './app.module.css';
 
-import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
 export const App = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
-  const ingredients = useAppSelector(selectIngredients);
-  const isLoading = useAppSelector(selectIngredientsIsLoading);
-  const error = useAppSelector(selectIngredientsError);
-  const selectedIngredient = useAppSelector(selectCurrentIngredient);
-  const orderNumber = useAppSelector(selectOrderNumber);
 
   useEffect(() => {
     void dispatch(fetchIngredients());
   }, [dispatch]);
 
-  const handleIngredientClose = useCallback(() => {
-    dispatch(clearCurrentIngredient());
-  }, [dispatch]);
-
-  const handleOrderClose = useCallback(() => {
-    dispatch(clearOrder());
-  }, [dispatch]);
-
   return (
     <div className={styles.app}>
       <AppHeader />
-      {isLoading ? (
-        <div className={styles.status}>
-          <Preloader />
-        </div>
-      ) : error ? (
-        <div className={styles.status}>
-          <div className={styles.error}>
-            <p className='text text_type_main-medium mb-4'>
-              Не удалось загрузить ингредиенты
-            </p>
-            <p className='text text_type_main-default text_color_inactive'>{error}</p>
-          </div>
-        </div>
-      ) : (
-        <main className={styles.main}>
-          <BurgerIngredients ingredients={ingredients} />
-          <BurgerConstructor />
-        </main>
-      )}
-      {selectedIngredient ? (
-        <Modal title='Детали ингредиента' onClose={handleIngredientClose}>
-          <IngredientDetails ingredient={selectedIngredient} />
-        </Modal>
-      ) : null}
-      {orderNumber ? (
-        <Modal onClose={handleOrderClose}>
-          <OrderDetails orderNumber={orderNumber} />
-        </Modal>
-      ) : null}
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/ingredients/:id' element={<IngredientPage />} />
+        <Route path='/feed' element={<FeedPage />} />
+        <Route path='/register' element={<RegisterPage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+        <Route path='/reset-password' element={<ResetPasswordPage />} />
+        <Route path='/profile' element={<ProfilePage />}>
+          <Route index element={<ProfileDetailsPage />} />
+          <Route path='orders' element={<ProfileOrdersPage />} />
+        </Route>
+        <Route path='*' element={<NotFoundPage />} />
+      </Routes>
     </div>
   );
 };

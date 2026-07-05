@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  width: min(1240px, calc(100% - 32px));
+  margin: 40px auto 0;
+  padding-bottom: 40px;
+  overflow: hidden;
+}
+
+.status {
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 88px);
+  padding-top: 160px;
+}
+
+.error {
+  max-width: 420px;
+  text-align: center;
+}
+
+@media (width <= 1280px) {
+  .main {
+    gap: 24px;
+    width: calc(100% - 32px);
+  }
+}

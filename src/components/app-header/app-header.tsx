@@ -6,41 +6,45 @@ import {
   Logo,
   ProfileIcon,
 } from '@krgaa/react-developer-burger-ui-components';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 export const AppHeader = (): React.JSX.Element => {
-  const preventNavigation = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-  };
+  const { pathname } = useLocation();
+  const isHomeActive = pathname === '/' || pathname.startsWith('/ingredients/');
+  const isFeedActive = pathname.startsWith('/feed');
+  const isProfileActive = pathname.startsWith('/profile');
 
   return (
     <header className={styles.header}>
       <nav className={styles.menu}>
         <div className={styles['menu-part-left']}>
-          {/* Тут должны быть ссылки, а не например кнопки или абзацы */}
-          <a
-            href='/'
-            className={`${styles.link} ${styles['link-active']}`}
-            onClick={preventNavigation}
+          <NavLink
+            to='/'
+            className={`${styles.link} ${isHomeActive ? styles['link-active'] : ''}`}
           >
-            <BurgerIcon type='primary' />
+            <BurgerIcon type={isHomeActive ? 'primary' : 'secondary'} />
             <p className='text text_type_main-default'>Конструктор</p>
-          </a>
-          <a href='/feed' className={styles.link} onClick={preventNavigation}>
-            <ListIcon type='secondary' />
+          </NavLink>
+          <NavLink
+            to='/feed'
+            className={`${styles.link} ${isFeedActive ? styles['link-active'] : ''}`}
+          >
+            <ListIcon type={isFeedActive ? 'primary' : 'secondary'} />
             <p className='text text_type_main-default'>Лента заказов</p>
-          </a>
+          </NavLink>
         </div>
-        <div className={styles.logo}>
+        <Link to='/' className={styles.logo} aria-label='Stellar Burgers'>
           <Logo />
-        </div>
-        <a
-          href='/profile'
-          className={`${styles.link} ${styles['link-position-last']}`}
-          onClick={preventNavigation}
+        </Link>
+        <NavLink
+          to='/profile'
+          className={`${styles.link} ${styles['link-position-last']} ${
+            isProfileActive ? styles['link-active'] : ''
+          }`}
         >
-          <ProfileIcon type='secondary' />
+          <ProfileIcon type={isProfileActive ? 'primary' : 'secondary'} />
           <p className='text text_type_main-default'>Личный кабинет</p>
-        </a>
+        </NavLink>
       </nav>
     </header>
   );
