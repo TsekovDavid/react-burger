@@ -3,6 +3,7 @@ import { FeedPage } from '@pages/feed/feed';
 import { ForgotPasswordPage } from '@pages/forgot-password/forgot-password';
 import { Home } from '@pages/home/home';
 import { IngredientPage } from '@pages/ingredient/ingredient';
+import { IngredientModal } from '@pages/ingredient/ingredient-modal';
 import { LoginPage } from '@pages/login/login';
 import { NotFoundPage } from '@pages/not-found/not-found';
 import { ProfileDetailsPage } from '@pages/profile-details/profile-details';
@@ -16,10 +17,17 @@ import { fetchIngredients } from '@services/ingredients/ingredients-actions';
 import styles from './app.module.css';
 
 import { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation, type Location } from 'react-router-dom';
+
+type TLocationState = {
+  background?: Location;
+};
 
 export const App = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const locationState = location.state as TLocationState | null;
+  const backgroundLocation = locationState?.background;
 
   useEffect(() => {
     void dispatch(fetchIngredients());
@@ -28,7 +36,7 @@ export const App = (): React.JSX.Element => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+      <Routes location={backgroundLocation ?? location}>
         <Route path='/' element={<Home />} />
         <Route path='/ingredients/:id' element={<IngredientPage />} />
         <Route path='/feed' element={<FeedPage />} />
@@ -42,6 +50,11 @@ export const App = (): React.JSX.Element => {
         </Route>
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
+      {backgroundLocation ? (
+        <Routes>
+          <Route path='/ingredients/:id' element={<IngredientModal />} />
+        </Routes>
+      ) : null}
     </div>
   );
 };

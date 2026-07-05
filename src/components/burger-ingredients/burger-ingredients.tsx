@@ -10,6 +10,7 @@ import styles from './burger-ingredients.module.css';
 import { Counter, CurrencyIcon, Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 type TBurgerIngredientsProps = {
   ingredients: TIngredient[];
@@ -66,6 +67,8 @@ export const BurgerIngredients = ({
   ingredients,
 }: TBurgerIngredientsProps): React.JSX.Element => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const ingredientCounts = useAppSelector(selectIngredientCounts);
   const [currentTab, setCurrentTab] = useState<TIngredientType>('bun');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -130,8 +133,11 @@ export const BurgerIngredients = ({
   const handleIngredientClick = useCallback(
     (ingredient: TIngredient) => {
       dispatch(setCurrentIngredient(ingredient));
+      void navigate(`/ingredients/${ingredient._id}`, {
+        state: { background: location },
+      });
     },
-    [dispatch]
+    [dispatch, location, navigate]
   );
 
   const renderIngredientCard = (ingredient: TIngredient): React.JSX.Element => {

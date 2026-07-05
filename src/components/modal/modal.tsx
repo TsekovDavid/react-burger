@@ -43,7 +43,12 @@ export const Modal = ({ title, onClose, children }: TModalProps): React.JSX.Elem
         aria-modal='true'
         aria-labelledby={title ? 'modal-title' : undefined}
       >
-        <button className={styles['close-button']} type='button' onClick={onClose}>
+        <button
+          className={styles['close-button']}
+          type='button'
+          aria-label='Закрыть'
+          onClick={onClose}
+        >
           <CloseIcon type='primary' />
         </button>
         {title ? (
