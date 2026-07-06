@@ -1,5 +1,6 @@
 import { AuthForm } from '@components/auth-form/auth-form';
 import { useClearUserError } from '@hooks/use-clear-user-error';
+import { useForm } from '@hooks/use-form';
 import { useAppDispatch, useAppSelector } from '@services/hooks';
 import { registerUser } from '@services/user/user-actions';
 import { selectUserError, selectUserIsLoading } from '@services/user/user-slice';
@@ -19,9 +20,8 @@ import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 export const RegisterPage = (): React.JSX.Element => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm({ name: '', email: '', password: '' });
+  const { name, email, password } = values;
   const [validationError, setValidationError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectUserIsLoading);
@@ -66,7 +66,7 @@ export const RegisterPage = (): React.JSX.Element => {
     >
       <Input
         value={name}
-        onChange={(event) => setName(event.target.value)}
+        onChange={handleChange}
         placeholder='Имя'
         name='name'
         required
@@ -74,7 +74,7 @@ export const RegisterPage = (): React.JSX.Element => {
       <EmailInput
         value={email}
         onChange={(event) => {
-          setEmail(event.target.value);
+          handleChange(event);
           setValidationError(null);
         }}
         placeholder='E-mail'
@@ -84,7 +84,7 @@ export const RegisterPage = (): React.JSX.Element => {
       <PasswordInput
         value={password}
         onChange={(event) => {
-          setPassword(event.target.value);
+          handleChange(event);
           setValidationError(null);
         }}
         placeholder='Пароль'

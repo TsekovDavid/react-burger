@@ -4,7 +4,6 @@ import { Modal } from '@components/modal/modal';
 import { OrderDetails } from '@components/order-details/order-details';
 import { useAppDispatch, useAppSelector } from '@services/hooks';
 import {
-  selectIngredients,
   selectIngredientsError,
   selectIngredientsIsLoading,
 } from '@services/ingredients/ingredients-slice';
@@ -19,7 +18,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export const Home = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
-  const ingredients = useAppSelector(selectIngredients);
   const isLoading = useAppSelector(selectIngredientsIsLoading);
   const error = useAppSelector(selectIngredientsError);
   const orderNumber = useAppSelector(selectOrderNumber);
@@ -52,7 +50,7 @@ export const Home = (): React.JSX.Element => {
   return (
     <DndProvider backend={HTML5Backend}>
       <main className={styles.main}>
-        <BurgerIngredients ingredients={ingredients} />
+        <BurgerIngredients />
         <BurgerConstructor />
       </main>
       {orderNumber ? (

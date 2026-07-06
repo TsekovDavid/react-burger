@@ -4,13 +4,11 @@ import { selectUserIsLoading } from '@services/user/user-slice';
 
 import styles from '../page.module.css';
 
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 export const ProfilePage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const isOrdersActive = pathname.startsWith('/profile/orders');
   const isLoading = useAppSelector(selectUserIsLoading);
 
   const handleLogout = async () => {
@@ -39,9 +37,11 @@ export const ProfilePage = (): React.JSX.Element => {
           </NavLink>
           <NavLink
             to='/profile/orders'
-            className={`${styles['profile-link']} ${
-              isOrdersActive ? styles['profile-link-active'] : ''
-            } text text_type_main-medium`}
+            className={({ isActive }) =>
+              `${styles['profile-link']} ${
+                isActive ? styles['profile-link-active'] : ''
+              } text text_type_main-medium`
+            }
           >
             История заказов
           </NavLink>

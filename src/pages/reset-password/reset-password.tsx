@@ -1,5 +1,6 @@
 import { AuthForm } from '@components/auth-form/auth-form';
 import { useClearUserError } from '@hooks/use-clear-user-error';
+import { useForm } from '@hooks/use-form';
 import { useAppDispatch, useAppSelector } from '@services/hooks';
 import { resetUserPassword } from '@services/user/user-actions';
 import { selectUserError, selectUserIsLoading } from '@services/user/user-slice';
@@ -11,8 +12,8 @@ import { useState, type FormEvent } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 export const ResetPasswordPage = (): React.JSX.Element => {
-  const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');
+  const { values, handleChange } = useForm({ password: '', token: '' });
+  const { password, token } = values;
   const [validationError, setValidationError] = useState<string | null>(null);
   const [hasResetAccess] = useState(canResetPassword);
   const dispatch = useAppDispatch();
@@ -61,7 +62,7 @@ export const ResetPasswordPage = (): React.JSX.Element => {
       <PasswordInput
         value={password}
         onChange={(event) => {
-          setPassword(event.target.value);
+          handleChange(event);
           setValidationError(null);
         }}
         placeholder='Введите новый пароль'
@@ -70,7 +71,7 @@ export const ResetPasswordPage = (): React.JSX.Element => {
       />
       <Input
         value={token}
-        onChange={(event) => setToken(event.target.value)}
+        onChange={handleChange}
         placeholder='Введите код из письма'
         name='token'
         required

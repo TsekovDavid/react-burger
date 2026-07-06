@@ -1,4 +1,5 @@
 import { useClearUserError } from '@hooks/use-clear-user-error';
+import { useForm } from '@hooks/use-form';
 import { useAppDispatch, useAppSelector } from '@services/hooks';
 import { updateUser } from '@services/user/user-actions';
 import {
@@ -28,9 +29,12 @@ export const ProfileDetailsPage = (): React.JSX.Element => {
   const user = useAppSelector(selectUser);
   const isLoading = useAppSelector(selectUserIsLoading);
   const error = useAppSelector(selectUserError);
-  const [name, setName] = useState(user?.name ?? '');
-  const [email, setEmail] = useState(user?.email ?? '');
-  const [password, setPassword] = useState('');
+  const { values, setValues, handleChange } = useForm({
+    name: user?.name ?? '',
+    email: user?.email ?? '',
+    password: '',
+  });
+  const { name, email, password } = values;
   const [passwordInputVersion, setPasswordInputVersion] = useState(0);
   const [validationError, setValidationError] = useState<string | null>(null);
   const isChanged =
@@ -39,12 +43,10 @@ export const ProfileDetailsPage = (): React.JSX.Element => {
   useClearUserError();
 
   useEffect(() => {
-    setName(user?.name ?? '');
-    setEmail(user?.email ?? '');
-    setPassword('');
+    setValues({ name: user?.name ?? '', email: user?.email ?? '', password: '' });
     setValidationError(null);
     setPasswordInputVersion((version) => version + 1);
-  }, [user]);
+  }, [setValues, user]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,9 +75,7 @@ export const ProfileDetailsPage = (): React.JSX.Element => {
   };
 
   const handleCancel = () => {
-    setName(user?.name ?? '');
-    setEmail(user?.email ?? '');
-    setPassword('');
+    setValues({ name: user?.name ?? '', email: user?.email ?? '', password: '' });
     setValidationError(null);
     setPasswordInputVersion((version) => version + 1);
   };
@@ -89,7 +89,7 @@ export const ProfileDetailsPage = (): React.JSX.Element => {
       <Input
         extraClass='mb-6'
         value={name}
-        onChange={(event) => setName(event.target.value)}
+        onChange={handleChange}
         placeholder='Имя'
         name='name'
         icon='EditIcon'
@@ -99,7 +99,7 @@ export const ProfileDetailsPage = (): React.JSX.Element => {
         extraClass='mb-6'
         value={email}
         onChange={(event) => {
-          setEmail(event.target.value);
+          handleChange(event);
           setValidationError(null);
         }}
         placeholder='Логин'
@@ -111,7 +111,7 @@ export const ProfileDetailsPage = (): React.JSX.Element => {
         key={passwordInputVersion}
         value={password}
         onChange={(event) => {
-          setPassword(event.target.value);
+          handleChange(event);
           setValidationError(null);
         }}
         placeholder='Пароль'

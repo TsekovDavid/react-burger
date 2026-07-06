@@ -1,5 +1,6 @@
 import { AuthForm } from '@components/auth-form/auth-form';
 import { useClearUserError } from '@hooks/use-clear-user-error';
+import { useForm } from '@hooks/use-form';
 import { useAppDispatch, useAppSelector } from '@services/hooks';
 import { requestPasswordReset } from '@services/user/user-actions';
 import { selectUserError, selectUserIsLoading } from '@services/user/user-slice';
@@ -11,7 +12,8 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const ForgotPasswordPage = (): React.JSX.Element => {
-  const [email, setEmail] = useState('');
+  const { values, handleChange } = useForm({ email: '' });
+  const { email } = values;
   const [validationError, setValidationError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -55,7 +57,7 @@ export const ForgotPasswordPage = (): React.JSX.Element => {
       <EmailInput
         value={email}
         onChange={(event) => {
-          setEmail(event.target.value);
+          handleChange(event);
           setValidationError(null);
         }}
         placeholder='Укажите e-mail'
