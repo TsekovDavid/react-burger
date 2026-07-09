@@ -1,5 +1,6 @@
 import {
   addIngredient,
+  clearBurgerConstructor,
   moveIngredient,
   removeIngredient,
   selectBurgerConstructorBun,
@@ -11,6 +12,7 @@ import { DND_ITEM_TYPES } from '@services/dnd';
 import { useAppDispatch, useAppSelector } from '@services/hooks';
 import { sendOrder } from '@services/order/order-actions';
 import { selectOrderError, selectOrderIsLoading } from '@services/order/order-slice';
+import { selectIsAuthChecked, selectUser } from '@services/user/user-slice';
 
 import type { TConstructorIngredient, TIngredient } from '@utils/types';
 
@@ -24,6 +26,7 @@ import {
 } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 type TDraggedIngredient = {
   ingredient: TIngredient;
@@ -108,12 +111,16 @@ const ConstructorIngredientItem = ({
 
 export const BurgerConstructor = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const bun = useAppSelector(selectBurgerConstructorBun);
   const ingredients = useAppSelector(selectBurgerConstructorIngredients);
   const totalPrice = useAppSelector(selectTotalPrice);
   const orderIngredientIds = useAppSelector(selectOrderIngredientIds);
   const isOrderLoading = useAppSelector(selectOrderIsLoading);
   const orderError = useAppSelector(selectOrderError);
+  const user = useAppSelector(selectUser);
+  const isAuthChecked = useAppSelector(selectIsAuthChecked);
   const [{ isOver, draggedIngredientType }, dropRef] = useDrop<
     TDraggedIngredient,
     void,
@@ -147,12 +154,24 @@ export const BurgerConstructor = (): React.JSX.Element => {
     [dispatch]
   );
   const handleOrderClick = useCallback(() => {
-    if (orderIngredientIds.length === 0) {
+    if (orderIngredientIds.length === 0 || !isAuthChecked) {
       return;
     }
 
-    void dispatch(sendOrder(orderIngredientIds));
-  }, [dispatch, orderIngredientIds]);
+    if (!user) {
+      void navigate('/login', { state: { from: location } });
+      return;
+    }
+
+    void dispatch(sendOrder(orderIngredientIds))
+      .unwrap()
+      .then(() => {
+        dispatch(clearBurgerConstructor());
+      })
+      .catch(() => {
+        // The visible error message is stored in the order slice.
+      });
+  }, [dispatch, isAuthChecked, location, navigate, orderIngredientIds, user]);
   const isBunHover = isOver && draggedIngredientType === 'bun';
   const isIngredientHover =
     isOver && draggedIngredientType !== null && draggedIngredientType !== 'bun';
@@ -239,7 +258,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
           type='primary'
           size='large'
           onClick={handleOrderClick}
-          disabled={!bun || isOrderLoading}
+          disabled={!bun || isOrderLoading || !isAuthChecked}
         >
           {isOrderLoading ? 'Оформляем...' : 'Оформить заказ'}
         </Button>

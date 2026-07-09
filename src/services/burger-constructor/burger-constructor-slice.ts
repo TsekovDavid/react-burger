@@ -54,6 +54,7 @@ export const burgerConstructorSlice = createSlice({
         state.ingredients.splice(hoverIndex, 0, draggedIngredient);
       }
     },
+    clearBurgerConstructor: () => initialState,
   },
 });
 
@@ -116,5 +117,9 @@ export const selectOrderIngredientIds = createSelector(
   }
 );
 
-export const { addIngredient, moveIngredient, removeIngredient } =
-  burgerConstructorSlice.actions;
+export const {
+  addIngredient,
+  clearBurgerConstructor,
+  moveIngredient,
+  removeIngredient,
+} = burgerConstructorSlice.actions;

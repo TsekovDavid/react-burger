@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 56px;
+  margin-top: 24px;
+}
+
+.error {
+  align-self: stretch;
+  margin: 24px 0 0;
+  color: var(--colors-interface-error);
+  text-align: right;
+}

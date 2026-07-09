@@ -6,41 +6,59 @@ import {
   Logo,
   ProfileIcon,
 } from '@krgaa/react-developer-burger-ui-components';
+import { Link, NavLink } from 'react-router-dom';
 
 export const AppHeader = (): React.JSX.Element => {
-  const preventNavigation = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-  };
-
   return (
     <header className={styles.header}>
       <nav className={styles.menu}>
         <div className={styles['menu-part-left']}>
-          {/* Тут должны быть ссылки, а не например кнопки или абзацы */}
-          <a
-            href='/'
-            className={`${styles.link} ${styles['link-active']}`}
-            onClick={preventNavigation}
+          <NavLink
+            to='/'
+            end
+            className={({ isActive }) =>
+              `${styles.link} ${isActive ? styles['link-active'] : ''}`
+            }
           >
-            <BurgerIcon type='primary' />
-            <p className='text text_type_main-default'>Конструктор</p>
-          </a>
-          <a href='/feed' className={styles.link} onClick={preventNavigation}>
-            <ListIcon type='secondary' />
-            <p className='text text_type_main-default'>Лента заказов</p>
-          </a>
+            {({ isActive }) => (
+              <>
+                <BurgerIcon type={isActive ? 'primary' : 'secondary'} />
+                <p className='text text_type_main-default'>Конструктор</p>
+              </>
+            )}
+          </NavLink>
+          <NavLink
+            to='/feed'
+            className={({ isActive }) =>
+              `${styles.link} ${isActive ? styles['link-active'] : ''}`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <ListIcon type={isActive ? 'primary' : 'secondary'} />
+                <p className='text text_type_main-default'>Лента заказов</p>
+              </>
+            )}
+          </NavLink>
         </div>
-        <div className={styles.logo}>
+        <Link to='/' className={styles.logo} aria-label='Stellar Burgers'>
           <Logo />
-        </div>
-        <a
-          href='/profile'
-          className={`${styles.link} ${styles['link-position-last']}`}
-          onClick={preventNavigation}
+        </Link>
+        <NavLink
+          to='/profile'
+          className={({ isActive }) =>
+            `${styles.link} ${styles['link-position-last']} ${
+              isActive ? styles['link-active'] : ''
+            }`
+          }
         >
-          <ProfileIcon type='secondary' />
-          <p className='text text_type_main-default'>Личный кабинет</p>
-        </a>
+          {({ isActive }) => (
+            <>
+              <ProfileIcon type={isActive ? 'primary' : 'secondary'} />
+              <p className='text text_type_main-default'>Личный кабинет</p>
+            </>
+          )}
+        </NavLink>
       </nav>
     </header>
   );
