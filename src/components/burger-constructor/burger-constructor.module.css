@@ -23,6 +23,19 @@
   gap: 8px;
 }
 
+.drag-handle {
+  display: flex;
+  cursor: grab;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.item-dragging {
+  opacity: 0.4;
+}
+
 .locked-element {
   width: 536px;
 }
@@ -53,4 +66,46 @@
 .currency {
   width: 36px;
   height: 36px;
+}
+
+.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 536px;
+  min-height: 80px;
+  margin-left: 32px;
+  background: var(--background-element);
+  border: 1px dashed var(--colors-interface-accent);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.placeholder-top {
+  margin-bottom: 16px;
+  border-radius: 88px 88px 40px 40px;
+}
+
+.placeholder-bottom {
+  margin-top: 16px;
+  border-radius: 40px 40px 88px 88px;
+}
+
+.placeholder-list {
+  width: 568px;
+  min-height: 240px;
+  margin: 0;
+  border-radius: 40px;
+}
+
+.placeholder-active {
+  border-color: var(--colors-interface-success);
+  box-shadow: 0 0 20px rgb(0 204 204 / 20%);
+}
+
+.error {
+  width: 568px;
+  margin: 16px 16px 0;
+  text-align: right;
 }

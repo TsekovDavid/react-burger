@@ -15,7 +15,19 @@ export type TIngredient = {
   __v: number;
 };
 
+export type TConstructorIngredient = TIngredient & {
+  constructorId: string;
+};
+
 export type TIngredientsResponse = {
   success: boolean;
   data: TIngredient[];
+};
+
+export type TOrderResponse = {
+  success: boolean;
+  name: string;
+  order: {
+    number: number;
+  };
 };
