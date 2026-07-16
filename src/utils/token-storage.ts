@@ -9,6 +9,12 @@ import type { TTokenResponse } from './types';
 export const getAccessToken = (): string | null =>
   localStorage.getItem(ACCESS_TOKEN_KEY);
 
+export const getAccessTokenValue = (): string | null => {
+  const accessToken = getAccessToken();
+
+  return accessToken?.replace(/^Bearer\s+/i, '') ?? null;
+};
+
 export const getRefreshToken = (): string | null =>
   localStorage.getItem(REFRESH_TOKEN_KEY);
 

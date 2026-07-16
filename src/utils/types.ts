@@ -32,6 +32,30 @@ export type TOrderResponse = {
   };
 };
 
+export type TOrderStatus = 'created' | 'pending' | 'done';
+
+export type TOrder = {
+  ingredients: string[];
+  _id: string;
+  status: TOrderStatus;
+  name: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TOrdersResponse = {
+  success: boolean;
+  orders: TOrder[];
+  total: number;
+  totalToday: number;
+};
+
+export type TOrderByIdResponse = {
+  success: boolean;
+  orders: TOrder[];
+};
+
 export type TUser = {
   email: string;
   name: string;

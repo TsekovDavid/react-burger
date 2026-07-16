@@ -4,11 +4,12 @@ import { selectUserIsLoading } from '@services/user/user-slice';
 
 import styles from '../page.module.css';
 
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useMatch, useNavigate } from 'react-router-dom';
 
 export const ProfilePage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isOrdersPage = Boolean(useMatch('/profile/orders'));
   const isLoading = useAppSelector(selectUserIsLoading);
 
   const handleLogout = async () => {
@@ -21,7 +22,9 @@ export const ProfilePage = (): React.JSX.Element => {
   };
 
   return (
-    <main className={styles.profile}>
+    <main
+      className={`${styles.profile} ${isOrdersPage ? styles['profile-orders'] : ''}`}
+    >
       <aside>
         <nav className={styles['profile-menu']}>
           <NavLink
@@ -55,7 +58,9 @@ export const ProfilePage = (): React.JSX.Element => {
           </button>
         </nav>
         <p className={`${styles['profile-description']} text text_type_main-default`}>
-          В этом разделе вы можете изменить свои персональные данные
+          {isOrdersPage
+            ? 'В этом разделе вы можете просмотреть свою историю заказов'
+            : 'В этом разделе вы можете изменить свои персональные данные'}
         </p>
       </aside>
       <section className={styles['profile-content']}>

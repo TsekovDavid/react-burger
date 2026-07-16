@@ -7,6 +7,8 @@ import { IngredientPage } from '@pages/ingredient/ingredient';
 import { IngredientModal } from '@pages/ingredient/ingredient-modal';
 import { LoginPage } from '@pages/login/login';
 import { NotFoundPage } from '@pages/not-found/not-found';
+import { OrderPage } from '@pages/order/order';
+import { OrderModal } from '@pages/order/order-modal';
 import { ProfileDetailsPage } from '@pages/profile-details/profile-details';
 import { ProfileOrdersPage } from '@pages/profile-orders/profile-orders';
 import { ProfilePage } from '@pages/profile/profile';
@@ -49,6 +51,7 @@ export const App = (): React.JSX.Element => {
         <Route path='/' element={<Home />} />
         <Route path='/ingredients/:id' element={<IngredientPage />} />
         <Route path='/feed' element={<FeedPage />} />
+        <Route path='/feed/:id' element={<OrderPage source='feed' />} />
         <Route
           path='/register'
           element={
@@ -92,11 +95,28 @@ export const App = (): React.JSX.Element => {
           <Route index element={<ProfileDetailsPage />} />
           <Route path='orders' element={<ProfileOrdersPage />} />
         </Route>
+        <Route
+          path='/profile/orders/:id'
+          element={
+            <ProtectedRoute>
+              <OrderPage source='profile' />
+            </ProtectedRoute>
+          }
+        />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
       {backgroundLocation ? (
         <Routes>
           <Route path='/ingredients/:id' element={<IngredientModal />} />
+          <Route path='/feed/:id' element={<OrderModal source='feed' />} />
+          <Route
+            path='/profile/orders/:id'
+            element={
+              <ProtectedRoute>
+                <OrderModal source='profile' />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       ) : null}
     </div>
