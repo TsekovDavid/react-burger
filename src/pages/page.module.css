@@ -20,6 +20,10 @@
   margin: 120px auto 0;
 }
 
+.profile-orders {
+  grid-template-columns: 320px minmax(0, 844px);
+}
+
 .profile-menu {
   display: flex;
   flex-direction: column;
@@ -53,4 +57,8 @@
 
 .profile-content {
   min-width: 0;
+}
+
+.profile-orders .profile-content {
+  max-height: calc(100vh - 168px);
 }

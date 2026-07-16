@@ -1,4 +1,5 @@
 export const BURGER_API_URL = 'https://new-stellarburgers.education-services.ru/api';
+export const BURGER_WS_URL = 'wss://new-stellarburgers.education-services.ru/orders';
 
 export const INGREDIENTS_ENDPOINT = `${BURGER_API_URL}/ingredients`;
 export const ORDERS_ENDPOINT = `${BURGER_API_URL}/orders`;
@@ -9,6 +10,8 @@ export const LOGOUT_ENDPOINT = `${BURGER_API_URL}/auth/logout`;
 export const USER_ENDPOINT = `${BURGER_API_URL}/auth/user`;
 export const FORGOT_PASSWORD_ENDPOINT = `${BURGER_API_URL}/password-reset`;
 export const RESET_PASSWORD_ENDPOINT = `${BURGER_API_URL}/password-reset/reset`;
+export const ALL_ORDERS_WS_ENDPOINT = `${BURGER_WS_URL}/all`;
+export const USER_ORDERS_WS_ENDPOINT = BURGER_WS_URL;
 
 export const ACCESS_TOKEN_KEY = 'accessToken';
 export const REFRESH_TOKEN_KEY = 'refreshToken';

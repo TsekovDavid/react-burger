@@ -17,6 +17,7 @@ import type {
   TIngredient,
   TIngredientsResponse,
   TMessageResponse,
+  TOrderByIdResponse,
   TOrderResponse,
   TRegisterData,
   TResetPasswordData,
@@ -131,6 +132,18 @@ export const createOrder = async (ingredients: string[]): Promise<TOrderResponse
 
   if (!data.success) {
     throw new Error('Failed to create order');
+  }
+
+  return data;
+};
+
+export const getOrderById = async (orderId: string): Promise<TOrderByIdResponse> => {
+  const data = await request<TOrderByIdResponse>(
+    `${ORDERS_ENDPOINT}/${encodeURIComponent(orderId)}`
+  );
+
+  if (!data.success) {
+    throw new Error('Failed to load order');
   }
 
   return data;
